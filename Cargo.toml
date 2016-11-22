@@ -1,0 +1,9 @@
+[package]
+name = "forza"
+version = "0.1.0"
+authors = ["Maciej Małecki <me@mmalecki.com>"]
+
+[dependencies]
+timer = "0.1.6"
+rustc-serialize = "0.3.21"
+numbat = "0.1.0"
