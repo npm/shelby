@@ -1,16 +1,20 @@
-use std::collections::LinkedList;
+use std::collections::BTreeMap;
 
-extern crate rustc_serialize;
+extern crate numbat;
 
 mod forza;
 mod plugins;
 
+use forza::ForzaPlugin;
+
+fn start_plugin<T: ForzaPlugin>(mut plugin: T) {
+  plugin.start();
+}
+
 fn main() {
-  // let hostname = std::env::var("HOSTNAME").expect("HOSTNAME is expected");
-  // let port = std::env::var("PORT").expect("PORT is expected");
-  //
-  let mut plugins: LinkedList<Box<forza::ForzaPlugin>> = LinkedList::new();
-  plugins.push_back(Box::new(plugins::heartbeat::Heartbeat::new()));
-  let mut forza = forza::Forza::new("tcp://127.0.0.1:1337", plugins);
-  forza.start();
+  let mut emitter = numbat::Emitter::new(BTreeMap::new(), "forza");
+  emitter.connect("tcp://127.0.0.1:1337");
+
+  let heartbeat = plugins::heartbeat::Heartbeat::new(emitter);
+  start_plugin(heartbeat);
 }

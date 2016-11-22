@@ -7,3 +7,5 @@ authors = ["Maciej Małecki <me@mmalecki.com>"]
 timer = "0.1.6"
 rustc-serialize = "0.3.21"
 numbat = "0.1.0"
+chrono = "0.2.25"
+serde_json = "0.8.3"
