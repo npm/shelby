@@ -1,3 +1,5 @@
+#![feature(libc)]
+
 use std::collections::BTreeMap;
 
 extern crate numbat;
@@ -15,6 +17,6 @@ fn main() {
   let mut emitter = numbat::Emitter::new(BTreeMap::new(), "forza");
   emitter.connect("tcp://127.0.0.1:1337");
 
-  let heartbeat = plugins::heartbeat::Heartbeat::new(emitter);
+  let heartbeat = plugins::load_average::LoadAverage::new(emitter);
   start_plugin(heartbeat);
 }
