@@ -27,14 +27,13 @@ impl<'a> Heartbeat<'a> {
 
     let (tx, rx) = channel();
 
-    let _guard = self.timer.schedule_with_delay(chrono::Duration::seconds(10), move || {
+    let _guard = self.timer.schedule_repeating(chrono::Duration::seconds(10), move || {
       let _ignored = tx.send(());
     });
 
-    rx.recv().unwrap();
-
-    if self.started {
-      self.schedule();
+    while self.started {
+      rx.recv().unwrap();
+      self.send();
     }
   }
 
