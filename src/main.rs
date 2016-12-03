@@ -21,6 +21,11 @@ fn main() {
     start_plugin(heartbeat);
   });
 
+  let memory = plugins::memory::Memory::new(emitter.clone());
+  thread::spawn(|| {
+    start_plugin(memory);
+  });
+
   let load_average = plugins::load_average::LoadAverage::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(load_average);
