@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-./configure --with-plugin uptime --with-plugin mem --with-plugin load-average --with-plugin process --with-plugin heartbeat --with-plugin logs
-$(which gmake || which make)

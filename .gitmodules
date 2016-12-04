@@ -1,9 +1,0 @@
-[submodule "deps/libuv"]
-	path = deps/libuv
-	url = https://github.com/joyent/libuv.git
-[submodule "deps/saneopt"]
-	path = deps/saneopt
-	url = https://github.com/mmalecki/saneopt.git
-[submodule "deps/env"]
-	path = deps/env
-	url = https://github.com/mmalecki/env.git
