@@ -14,7 +14,10 @@ fn start_plugin<T: ForzaPlugin>(mut plugin: T) {
 
 fn main() {
   let mut emitter = numbat::Emitter::new(BTreeMap::new(), "forza");
-  emitter.connect("tcp://127.0.0.1:1337");
+  emitter.connect(&match std::env::var_os("METRICS") {
+    Some(url) => url.into_string().expect("expected METRICS to be valid UTF-8"),
+    None => String::from("tcp://127.0.0.1:1337")
+  });
 
   let heartbeat = plugins::heartbeat::Heartbeat::new(emitter.clone());
   thread::spawn(|| {
