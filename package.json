@@ -1,7 +1,7 @@
 {
   "name": "@npm/forza",
   "description": "A lightweight agent for anything that speaks JSON metrics",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "npm, Inc <support@npmjs.com>",
   "repository": {
     "type": "git",
