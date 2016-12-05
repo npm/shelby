@@ -14,10 +14,10 @@
   },
   "scripts": {
     "test": "test/run",
-    "prepublish": "cargo build --release && cp target/release/forza"
+    "prepublish": "cargo build --release && cp target/release/forza ."
   },
   "bin": {
-    "forza": "target/release/forza"
+    "forza": "forza"
   },
   "license": "MIT"
 }
