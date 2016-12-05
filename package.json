@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "test/run",
-    "prepublish": "cargo build --release"
+    "prepublish": "cargo build --release && cp target/release/forza"
   },
   "bin": {
     "forza": "target/release/forza"

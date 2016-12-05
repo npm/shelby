@@ -1,3 +1,4 @@
 *.o
 *.sw[op]
 node_modules
+target
