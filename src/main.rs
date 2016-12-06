@@ -19,6 +19,8 @@ fn main() {
     None => String::from("tcp://127.0.0.1:1337")
   });
 
+  emitter.emit_name("forza.start");
+
   let heartbeat = plugins::heartbeat::Heartbeat::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(heartbeat);
