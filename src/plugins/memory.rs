@@ -77,10 +77,7 @@ impl<'a> Memory<'a> {
       cached.expect("expected Cached") -
       buffers.expect("expected Buffers");
 
-    let mut point = numbat::Point::new();
-    point.insert("name", serde_json::to_value("memory"));
-    point.insert("value", serde_json::to_value(used as f64 / t as f64));
-    self.emitter.emit(point);
+    self.emitter.emit_f64("memory", used as f64 / t as f64);
   }
 }
 

@@ -38,10 +38,7 @@ impl<'a> Heartbeat<'a> {
   }
 
   fn send(&mut self) {
-    let mut point: numbat::Point = numbat::Point::new();
-    point.insert("name", serde_json::to_value("heartbeat"));
-    point.insert("value", serde_json::to_value(1));
-    self.emitter.emit(point);
+    self.emitter.emit_name("heartbeat");
   }
 }
 

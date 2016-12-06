@@ -58,21 +58,9 @@ impl<'a> LoadAverage<'a> {
     let ret = get_load_average();
     match ret {
       Ok(loads) => {
-        let mut point1: numbat::Point = numbat::Point::new();
-        point1.insert("name", serde_json::to_value("load-average.1"));
-        point1.insert("value", serde_json::to_value(loads[0]));
-
-        let mut point5: numbat::Point = numbat::Point::new();
-        point5.insert("name", serde_json::to_value("load-average.5"));
-        point5.insert("value", serde_json::to_value(loads[1]));
-
-        let mut point15: numbat::Point = numbat::Point::new();
-        point15.insert("name", serde_json::to_value("load-average.15"));
-        point15.insert("value", serde_json::to_value(loads[2]));
-
-        self.emitter.emit(point1);
-        self.emitter.emit(point5);
-        self.emitter.emit(point15);
+        self.emitter.emit_f64("load-average.1", loads[0]);
+        self.emitter.emit_f64("load-average.5", loads[1]);
+        self.emitter.emit_f64("load-average.15", loads[2]);
       },
       Err(e) => panic!("getloadavg() failed: {}", e)
     }
