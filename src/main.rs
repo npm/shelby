@@ -5,7 +5,6 @@ mod forza;
 mod plugins;
 
 use std::thread;
-use std::collections::BTreeMap;
 use forza::ForzaPlugin;
 
 fn start_plugin<T: ForzaPlugin>(mut plugin: T) {
@@ -13,7 +12,7 @@ fn start_plugin<T: ForzaPlugin>(mut plugin: T) {
 }
 
 fn main() {
-  let mut emitter = numbat::Emitter::new(BTreeMap::new(), "host");
+  let mut emitter = numbat::Emitter::for_app("host");
   emitter.connect(&match std::env::var_os("METRICS") {
     Some(url) => url.into_string().expect("expected METRICS to be valid UTF-8"),
     None => String::from("tcp://127.0.0.1:1337")
