@@ -1,10 +1,6 @@
 extern crate libc;
-extern crate timer;
-extern crate chrono;
 extern crate numbat;
-extern crate serde_json;
 
-use std::sync::mpsc::channel;
 use self::libc::{c_double,c_int};
 
 use forza;
@@ -25,32 +21,13 @@ fn get_load_average() -> Result<[f64; 3], String> {
 }
 
 pub struct LoadAverage<'a> {
-  timer: timer::Timer,
   emitter: numbat::Emitter<'a>,
-  started: bool
 }
 
 impl<'a> LoadAverage<'a> {
   pub fn new(emitter: numbat::Emitter<'a>) -> LoadAverage {
     LoadAverage {
-      timer: timer::Timer::new(),
-      emitter: emitter,
-      started: false
-    }
-  }
-
-  fn schedule(&mut self) {
-    self.send();
-
-    let (tx, rx) = channel();
-
-    let _guard = self.timer.schedule_repeating(chrono::Duration::seconds(10), move || {
-      let _ignored = tx.send(());
-    });
-
-    while self.started {
-      rx.recv().unwrap();
-      self.send();
+      emitter: emitter
     }
   }
 
@@ -71,12 +48,8 @@ impl<'a> LoadAverage<'a> {
 impl<'a> forza::ForzaPlugin for LoadAverage<'a> {
   fn start(&mut self) {
     println!("starting load average plugin");
-    self.started = true;
-    self.schedule();
-  }
-
-  fn stop(&mut self) {
-    println!("stopping load average plugin");
-    self.started = false;
+    forza::schedule_repeating(move || {
+      self.send();
+    }, 10);
   }
 }

@@ -1,56 +1,22 @@
-extern crate timer;
-extern crate chrono;
 extern crate numbat;
-extern crate serde_json;
-
-use std::sync::mpsc::channel;
 
 use forza;
 
 pub struct Heartbeat<'a> {
-  timer: timer::Timer,
-  emitter: numbat::Emitter<'a>,
-  started: bool
+  emitter: numbat::Emitter<'a>
 }
 
-impl<'a> Heartbeat<'a> {
-  pub fn new(emitter: numbat::Emitter<'a>) -> Heartbeat {
-    Heartbeat {
-      timer: timer::Timer::new(),
-      emitter: emitter,
-      started: false
-    }
-  }
-
-  fn schedule(&mut self) {
-    self.send();
-
-    let (tx, rx) = channel();
-
-    let _guard = self.timer.schedule_repeating(chrono::Duration::seconds(10), move || {
-      let _ignored = tx.send(());
-    });
-
-    while self.started {
-      rx.recv().unwrap();
-      self.send();
-    }
-  }
-
-  fn send(&mut self) {
-    self.emitter.emit_name("heartbeat");
+pub fn new(emitter: numbat::Emitter) -> Heartbeat {
+  Heartbeat {
+    emitter: emitter
   }
 }
 
 impl<'a> forza::ForzaPlugin for Heartbeat<'a> {
   fn start(&mut self) {
     println!("starting heartbeat plugin");
-    self.started = true;
-    self.schedule();
-  }
-
-  fn stop(&mut self) {
-    println!("stopping heartbeat plugin");
-    self.started = false;
+    forza::schedule_repeating(move || {
+      self.emitter.emit_name("heartbeat");
+    }, 10);
   }
 }

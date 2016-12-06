@@ -20,7 +20,7 @@ fn main() {
 
   emitter.emit_name("forza.start");
 
-  let heartbeat = plugins::heartbeat::Heartbeat::new(emitter.clone());
+  let heartbeat = plugins::heartbeat::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(heartbeat);
   });
