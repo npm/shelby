@@ -1,6 +1,6 @@
 [package]
 name = "forza"
-version = "1.1.1"
+version = "1.1.2"
 authors = ["Maciej Małecki <me@mmalecki.com>"]
 
 [dependencies]
