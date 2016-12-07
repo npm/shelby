@@ -35,9 +35,9 @@ impl<'a> LoadAverage<'a> {
     let ret = get_load_average();
     match ret {
       Ok(loads) => {
-        self.emitter.emit_f64("load-average.1", loads[0]);
-        self.emitter.emit_f64("load-average.5", loads[1]);
-        self.emitter.emit_f64("load-average.15", loads[2]);
+        self.emitter.emit("load-average.1", loads[0]);
+        self.emitter.emit("load-average.5", loads[1]);
+        self.emitter.emit("load-average.15", loads[2]);
       },
       Err(e) => panic!("getloadavg() failed: {}", e)
     }
