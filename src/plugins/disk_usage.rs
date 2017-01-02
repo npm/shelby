@@ -31,14 +31,15 @@ impl<'a> DiskUsage<'a> {
   }
 
   fn send(&mut self) {
-    let ret = get_disk_usage("/");
-    match ret {
-      Ok(usage) => {
-        self.emitter.emit("disk-usage", usage);
-      },
-      Err(e) => panic!("statvfs() failed: {}", e)
-    }
+    self.send_for_mountpoint("/");
+    self.send_for_mountpoint("/mnt");
+  }
 
+  fn send_for_mountpoint(&mut self, mountpoint: &str) {
+    let usage = get_disk_usage(mountpoint);
+    if usage.is_ok() {
+      self.emitter.emit(&(String::from("disk-usage.") + mountpoint), usage.unwrap());
+    }
   }
 }
 
