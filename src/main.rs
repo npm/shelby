@@ -30,6 +30,11 @@ fn main() {
     start_plugin(memory);
   });
 
+  let disk_usage = plugins::disk_usage::DiskUsage::new(emitter.clone());
+  thread::spawn(|| {
+    start_plugin(disk_usage);
+  });
+
   let load_average = plugins::load_average::LoadAverage::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(load_average);
