@@ -35,6 +35,11 @@ fn main() {
     start_plugin(disk_usage);
   });
 
+  let netstat = plugins::netstat::Netstat::new(emitter.clone());
+  thread::spawn(|| {
+    start_plugin(netstat);
+  });
+
   let load_average = plugins::load_average::LoadAverage::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(load_average);
