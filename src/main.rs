@@ -1,13 +1,13 @@
 extern crate libc;
 extern crate numbat;
 
-mod forza;
+mod shelby;
 mod plugins;
 
 use std::thread;
-use forza::ForzaPlugin;
+use shelby::ShelbyPlugin;
 
-fn start_plugin<T: ForzaPlugin>(mut plugin: T) {
+fn start_plugin<T: ShelbyPlugin>(mut plugin: T) {
   plugin.start();
 }
 
@@ -18,7 +18,7 @@ fn main() {
     None => String::from("tcp://127.0.0.1:1337")
   });
 
-  emitter.emit_name("forza.start");
+  emitter.emit_name("start");
 
   let heartbeat = plugins::heartbeat::new(emitter.clone());
   thread::spawn(|| {

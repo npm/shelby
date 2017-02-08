@@ -3,7 +3,7 @@ extern crate numbat;
 
 use self::libc::{c_double,c_int};
 
-use forza;
+use shelby;
 
 #[cfg(unix)]
 extern {
@@ -45,10 +45,10 @@ impl<'a> LoadAverage<'a> {
   }
 }
 
-impl<'a> forza::ForzaPlugin for LoadAverage<'a> {
+impl<'a> shelby::ShelbyPlugin for LoadAverage<'a> {
   fn start(&mut self) {
     println!("starting load average plugin");
-    forza::schedule_repeating(move || {
+    shelby::schedule_repeating(move || {
       self.send();
     }, 10);
   }

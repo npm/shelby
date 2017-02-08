@@ -1,6 +1,6 @@
 extern crate numbat;
 
-use forza;
+use shelby;
 
 pub struct Heartbeat<'a> {
   emitter: numbat::Emitter<'a>
@@ -12,10 +12,10 @@ pub fn new(emitter: numbat::Emitter) -> Heartbeat {
   }
 }
 
-impl<'a> forza::ForzaPlugin for Heartbeat<'a> {
+impl<'a> shelby::ShelbyPlugin for Heartbeat<'a> {
   fn start(&mut self) {
     println!("starting heartbeat plugin");
-    forza::schedule_repeating(move || {
+    shelby::schedule_repeating(move || {
       self.emitter.emit_name("heartbeat");
     }, 10);
   }

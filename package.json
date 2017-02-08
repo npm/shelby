@@ -1,11 +1,11 @@
 {
-  "name": "@npm/forza",
+  "name": "@npm/shelby",
   "description": "A lightweight agent for anything that speaks JSON metrics",
   "version": "1.1.7",
   "author": "npm, Inc <support@npmjs.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/forza.git"
+    "url": "https://github.com/npm/shelby.git"
   },
   "devDependencies": {
     "json-stream": "0.2.x",
@@ -14,10 +14,10 @@
   },
   "scripts": {
     "test": "test/run",
-    "prepublish": "cargo build --release && cp target/release/forza ."
+    "prepublish": "cargo build --release && cp target/release/shelby ."
   },
   "bin": {
-    "forza": "forza"
+    "shelby": "shelby"
   },
   "license": "MIT"
 }

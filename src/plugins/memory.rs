@@ -3,7 +3,8 @@ extern crate numbat;
 
 use std::fs::File;
 use std::io::Read;
-use forza;
+use std::path::Path;
+use shelby;
 
 pub struct Memory<'a> {
   emitter: numbat::Emitter<'a>
@@ -58,11 +59,15 @@ impl<'a> Memory<'a> {
   }
 }
 
-impl<'a> forza::ForzaPlugin for Memory<'a> {
+impl<'a> shelby::ShelbyPlugin for Memory<'a> {
   fn start(&mut self) {
-    println!("starting memory plugin");
-    forza::schedule_repeating(move || {
-      self.send();
-    }, 10);
+    if Path::new("/proc/meminfo").exists() {
+        println!("starting memory plugin");
+        shelby::schedule_repeating(move || {
+          self.send();
+        }, 10);
+    } else {
+        println!("skipping memory plugin; no /proc on this system");
+    }
   }
 }

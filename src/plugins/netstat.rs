@@ -1,7 +1,7 @@
 extern crate linux_stats;
 extern crate numbat;
 
-use forza;
+use shelby;
 use plugins::netstat::linux_stats::SocketState;
 
 pub struct Netstat<'a> {
@@ -16,7 +16,12 @@ impl<'a> Netstat<'a> {
   }
 
   fn send(&mut self) {
-    let tcp = linux_stats::tcp().unwrap();
+    let check = linux_stats::tcp();
+    if !check.is_ok() {
+      return;
+    }
+
+    let tcp = check.unwrap();
     let (mut established, mut syn_sent, mut syn_recv, mut fin_wait1,
          mut fin_wait2, mut time_wait, mut close, mut close_wait, mut last_ack,
          mut listen, mut closing) =
@@ -54,10 +59,10 @@ impl<'a> Netstat<'a> {
   }
 }
 
-impl<'a> forza::ForzaPlugin for Netstat<'a> {
+impl<'a> shelby::ShelbyPlugin for Netstat<'a> {
   fn start(&mut self) {
     println!("starting netstat plugin");
-    forza::schedule_repeating(move || {
+    shelby::schedule_repeating(move || {
       self.send();
     }, 10);
   }

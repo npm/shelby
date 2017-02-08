@@ -4,7 +4,7 @@ extern crate numbat;
 
 use std::sync::mpsc::channel;
 
-pub trait ForzaPlugin {
+pub trait ShelbyPlugin {
   fn start(&mut self);
 }
 
