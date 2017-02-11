@@ -1,0 +1,7 @@
+forza
+*.o
+*.sw[op]
+config.mk
+include/forza-private/plugins.h
+node_modules
+target

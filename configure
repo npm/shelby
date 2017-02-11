@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+import os.path
+import argparse
+import subprocess
+
+def unique(l):
+    r = []
+    for i in l:
+        if i not in r:
+            r.append(i)
+    return r
+
+config = ''
+
+parser = argparse.ArgumentParser(description='Configure `forza` build.')
+parser.add_argument('--with-plugin', action='append')
+parser.add_argument('--interposed-dest-cpu',
+                    action='store',
+                    dest='interposed_dest_cpu',
+                    help='CPU architecture to build for. Valid values are: ia32, x64')
+args = parser.parse_args()
+
+if os.path.isfile('package.json'):
+    version = subprocess.check_output(['node', '-pe', 'require(\'./package.json\').version']);
+    config += 'FORZA_VERSION_HASH = ' + version
+
+plugins = unique(args.with_plugin or ['heartbeat'])
+
+print 'Building `forza` with plugins: ' + ', '.join(plugins)
+
+plugins_h = ''
+plugins_h += '#ifndef _PLUGINS_H\n'
+plugins_h += '#define _PLUGINS_H\n'
+plugins_h += '#include <forza.h>\n'
+plugins_h += '#define PLUGIN_COUNT ' + str(len(plugins)) + '\n'
+
+for plugin in plugins:
+    config += 'OBJS += src/plugins/' + plugin + '.o\n'
+    plugins_h += '#include "../../src/plugins/' + plugin + '.h"\n'
+
+plugins_h += 'int (*_plugin_init_calls[PLUGIN_COUNT])(forza_plugin_t* plugin) = { '
+plugins_h += ', '.join(plugin.replace('-', '_') + '_init' for plugin in plugins) + ' };\n'
+plugins_h += '#endif\n'
+
+arch = args.interposed_dest_cpu or subprocess.check_output(['node', '-pe', 'process.arch']).strip()
+if arch:
+    match = {
+        'ia32': '-m32',
+        'x86': '-m32',
+        'x64': '-m64'
+    }
+
+    if not match[arch]:
+        print 'Valid values for `--interposed-dest-cpu` option are: ia32, x64'
+        sys.exit(1)
+
+    config += 'INTERPOSED_CFLAGS += ' + match[arch] + '\n'
+
+f = open('config.mk', 'w')
+f.write(config + '\n')
+f.close()
+
+f = open('include/forza-private/plugins.h', 'w')
+f.write(plugins_h)
+f.close()
