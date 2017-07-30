@@ -15,7 +15,7 @@ fn main() {
   let mut emitter = numbat::Emitter::for_app("host");
   emitter.connect(&match std::env::var_os("METRICS") {
     Some(url) => url.into_string().expect("expected METRICS to be valid UTF-8"),
-    None => String::from("tcp://127.0.0.1:1337")
+    None => String::from("nsq://localhost:4151/pub?topic=metrics")
   });
 
   emitter.emit_name("start");
