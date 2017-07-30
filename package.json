@@ -1,7 +1,7 @@
 {
   "name": "@npm/shelby",
   "description": "A lightweight agent for anything that speaks JSON metrics",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "author": "npm, Inc <support@npmjs.com>",
   "bin": {
     "shelby": "shelby"
