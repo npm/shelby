@@ -7,11 +7,15 @@ mod plugins;
 use std::thread;
 use shelby::ShelbyPlugin;
 
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
 fn start_plugin<T: ShelbyPlugin>(mut plugin: T) {
   plugin.start();
 }
 
 fn main() {
+  println!("shelby v{}", VERSION);
+
   let mut emitter = numbat::Emitter::for_app("host");
   emitter.connect(&match std::env::var_os("METRICS") {
     Some(url) => url.into_string().expect("expected METRICS to be valid UTF-8"),
