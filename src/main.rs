@@ -34,6 +34,11 @@ fn main() {
     start_plugin(memory);
   });
 
+  let uptime = plugins::uptime::Uptime::new(emitter.clone());
+  thread::spawn(|| {
+    start_plugin(uptime);
+  });
+
   let disk_usage = plugins::disk_usage::DiskUsage::new(emitter.clone());
   thread::spawn(|| {
     start_plugin(disk_usage);
