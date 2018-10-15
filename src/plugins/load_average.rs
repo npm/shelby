@@ -1,5 +1,6 @@
 extern crate libc;
 extern crate numbat;
+extern crate num_cpus;
 
 use self::libc::{c_double,c_int};
 
@@ -33,11 +34,13 @@ impl<'a> LoadAverage<'a> {
 
   fn send(&mut self) {
     let ret = get_load_average();
+    let cpus = num_cpus::get();
+
     match ret {
       Ok(loads) => {
-        self.emitter.emit("load-average.1", loads[0]);
-        self.emitter.emit("load-average.5", loads[1]);
-        self.emitter.emit("load-average.15", loads[2]);
+        self.emitter.emit("load-average.1", loads[0] / cpus as f64);
+        self.emitter.emit("load-average.5", loads[1] / cpus as f64);
+        self.emitter.emit("load-average.15", loads[2] / cpus as f64);
       },
       Err(e) => panic!("getloadavg() failed: {}", e)
     }
