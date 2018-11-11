@@ -1,6 +1,6 @@
 # shelby
 
-The [Shelby Cobra](https://en.wikipedia.org/wiki/AC_Cobra) is an iconic sportscar as well as a monitoring agent monitoring agent for your unix system, written in Rust. Sends json metrics suitable for ingestion by [numbat](https://github.com/numbat-metrics).
+The [Shelby Cobra](https://en.wikipedia.org/wiki/AC_Cobra) is an iconic sportscar as well as a monitoring agent for your unix system, written in Rust. Sends json metrics suitable for ingestion by [numbat](https://github.com/numbat-metrics).
 
 ## Build
 
